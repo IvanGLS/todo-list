@@ -4,22 +4,26 @@
   {% load static %}
   <h1>
     <p>TODO List
-    <a href="{% url 'tasklist:task-create' %}" class="btn btn-primary link-to-page">
-      Create
+    <a href="{% url "tasklist:task-create" %}" class="btn btn-primary link-to-page float-right">
+      Add Task
     </a>
   </p>
   </h1>
-
   {% if task_list %}
       {% for task in task_list %}
         <tr>
           <td>
-
             <h1>{{ task.content }}
             {% if not task.completed %}
               <span style="color: red">Not done</span>
+              <a href="{% url "tasklist:task-complete" pk=task.id%}" class="btn btn-success link-to-page float-right">
+                Complete
+              </a>
             {% else %}
               <span style="color: green">Done</span>
+              <a href="{% url "tasklist:task-complete" pk=task.id%}" class="btn btn-secondary link-to-page float-right">
+                Undo
+              </a>
             {% endif %}
             </h1>
           </td>
@@ -46,9 +50,11 @@
               </a>
             </p>
           </td>
+{#        <a href="{% url 'taxi:toggle-car-assign' pk=car.id %}" class="btn btn-danger link-to-page">#}
+{#        Delete me from this car#}
+{#        </a>#}
         </tr>
       {% endfor %}
-
   {% else %}
       <p>There are no any tasks</p>
   {% endif %}

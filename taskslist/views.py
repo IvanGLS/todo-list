@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
 from .models import Task, Tag
 from .forms import TaskForm, TagForm
 
@@ -45,3 +47,14 @@ class TagUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Tag
     form_class = TagForm
     success_url = reverse_lazy("tasks:tags-list")
+
+
+@login_required
+def task_complete(request, pk):
+    task = Task.objects.get(id=pk)
+    if task.completed is True:
+        task.completed = False
+    else:
+        task.completed = True
+    task.save()
+    return HttpResponseRedirect(reverse_lazy("tasks:tasks-list"))
