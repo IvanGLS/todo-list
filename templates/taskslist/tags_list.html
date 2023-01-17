@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    Tags
+    <a href="{% url "tasklist:tag-create" %}" class="btn btn-primary link-to-page">
+      Add
+    </a>
+  </h1>
+
+  {% if tags_list %}
+    <table class="table">
+      <tr>
+        <th>Name</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+
+      {% for tag in tags_list %}
+        <tr>
+          <td>
+              {{ tag.tag_name }}
+          </td>
+          <td>
+              <a href="{% url "tasklist:tag-update"  pk=tag.id %}" class="btn btn-secondary link-to-page">
+                Update
+              </a>
+            </td>
+            <td>
+              <a href="{% url "tasklist:tag-delete" pk=tag.id %}" class="btn btn-secondary link-to-page">
+                Delete
+              </a>
+            </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+      <p>There are no any tags.</p>
+  {% endif %}
+{% endblock %}
